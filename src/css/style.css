@@ -28,15 +28,19 @@ body {
     grid-template-columns: 20rem 1fr;
     grid-template-rows: 5rem 30rem;
     background-color: red;
-    width: 70rem;
+    width: 82rem;
     height: 35rem;
+}
 
+.is-blurred {
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
 }
 
 /** header **/
 header {
     grid-column: 1 / 3;
-    background-color: grey;
+    background-color: yellowgreen;
 }
 
 /** side-bar **/
@@ -44,7 +48,7 @@ header {
 .side-container {
     grid-row: 2 / 3;
     grid-column: 1 / 2;
-    background-color: antiquewhite;
+    background-color: yellow;
     display: flex;
     flex-direction: column;
 }
@@ -58,7 +62,6 @@ header {
 }
 
 .side-bar {
-
     padding: 2rem 3rem 2rem 3rem;
 }
 
@@ -77,11 +80,110 @@ header {
 }
 
 .nav > .selected {
-    background-color: grey;
+    background-color: palevioletred;
+}
+
+.nav-footer {
+}
+
+.add-task {
+    display: flex;
+    background-color: yellowgreen;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
 }
 
 /** main-container **/
 .main-container {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
+    padding: 0 3rem;
+    margin: 3rem 0;
+    overflow-y: auto;
+    scrollbar-color: #D4AA70 #e4e4e4;
+    scroll-padding: 100px 0 0 100px;
+}
+
+.main-container::-webkit-scrollbar {
+    width: 14px;
+}
+
+.main-container::-webkit-scrollbar-track {
+    background-color: #e4e4e4;
+    border-radius: 6px;
+}
+
+.main-container::-webkit-scrollbar-thumb {
+    background-color: #d4aa70;
+    border-radius: 6px;
+}
+
+.todo-lists {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.todo-item {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    padding: 16px;
+    background-color: beige;
+}
+
+.todo-item .todo-title {
+    flex-grow: 3;
+}
+
+.blocker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,0,0,.5);
+}
+
+#form-popup {
+    display: none;
+}
+
+#form-popup.open {
+    display: block;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 500px;
+    height: 500px;
+    padding: 1rem;
+    position: fixed; 
+    left: 0; 
+    right: 0;
+    top: 0;
+    bottom: 0; 
+    margin: auto; 
+    background-color: #ffffff;
+}
+
+.form-footer {
+    text-align: right;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form label {
+    margin-top: 1rem;
 }
