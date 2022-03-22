@@ -1,6 +1,6 @@
 import format from 'date-fns'
 import Task from "./Task";
-import {addDeleteEventListener, addEditEventListener} from "./DisplayController"
+import {addDeleteEventListener, addEditEventListener, addDetailsEventListenr} from "./DisplayController"
 
 const todoListsClass = document.querySelector(".todo-lists")
 const taskID = document.querySelector(".task-id")
@@ -16,6 +16,7 @@ const todolist = (() => {
             
             addDeleteEventListener(item._id)
             addEditEventListener(item)
+            addDetailsEventListenr(item)
         })
     }
 
@@ -24,17 +25,20 @@ const todolist = (() => {
         displayTask(item)
         addDeleteEventListener(item._id)
         addEditEventListener(item)
+        addDetailsEventListenr(item)
     }
 
     const editTask = (item) => {
         const editedId = item._id
         const editedTitle = item._name
         const editedDate = item._date
-        const editedDespriction = item._decription
+        const editedDespriction = item._description
         const editedPriority = item.priority
         editHTMLSelektion(editedId, editedTitle, editedDate, editedDespriction, editedPriority)
         addDeleteEventListener(item._id)
         addEditEventListener(item)
+        addDetailsEventListenr(item)
+        console.log(item._description)
         editTaskInStorage(item)
     }
 
@@ -86,9 +90,7 @@ const todolist = (() => {
         const deleteSpan = document.createElement("button")
         deleteSpan.classList.add("delete")
         deleteSpan.appendChild(document.createTextNode("delete"))
-        toDoItemDiv.appendChild(deleteSpan)
-
-        
+        toDoItemDiv.appendChild(deleteSpan)        
     }
 
     const getHTMLSkeletonForNewTask = (id, name, date) => {

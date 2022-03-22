@@ -5,8 +5,9 @@ const content = document.querySelector(".content")
 const popUpForm = document.getElementById("form-popup")
 const addToDoListButton = document.querySelector(".add-task")
 const blocker = document.querySelector(".blocker")
+const blocker2 = document.querySelector(".blocker2")
 const form = document.querySelector(".form-container")
-const form2 = document.querySelector(".form-container")
+const descriptionPopUp = document.getElementById("description-popup")
 
 addToDoListButton.addEventListener("click", () => {
     openTaskFormPopUp(false)
@@ -21,9 +22,13 @@ const sumbitEventHandlerForNewTask = () => {
     })
 }
 
-const blockerDivClickListener = (callback) => {
+const blockerDivClickListener = (callback = null) => {
     blocker.addEventListener("click", () => {
-        form.removeEventListener("submit", callback)
+        if(callback) {
+            form.removeEventListener("submit", callback)
+            console.log("deleted")
+            
+        } 
         togglePopUpHandler()
     }, {
         once: true
@@ -33,19 +38,21 @@ const blockerDivClickListener = (callback) => {
 // handle after clicking the 'add task' button in the pop-up
 const handleTaskFromAddButtonEvent = (e) => {
     e.preventDefault()
-    const {title, date, description, priority, project} = getNewTaskForm()
-    const newTask = new Task(title, date, description, priority, project)
+    const {title, date, description, priority} = getNewTaskForm()
+    const newTask = new Task(title, date, description, priority)
     ToDoList.saveNewTask(newTask)
-    form.removeEventListener("sumbit", handleTaskFromAddButtonEvent)
     togglePopUpHandler()
 }
 
 // handle after clicking the 'edit task' button in the pop-up
 const handleTaskFromEditButtonEvent = (e, item) => {
     e.preventDefault()
-    const {title, date, description, priority, project} = getNewTaskForm()
+    const {title, date, description, priority} = getNewTaskForm()
     item._name = title
     item._date = date
+    item._description = description
+    item.priority = priority
+
     ToDoList.editTask(item)
     togglePopUpHandler()
 }
@@ -57,7 +64,7 @@ const addDeleteEventListener = (itemID) => {
         removedItem.parentElement.removeChild(removedItem)
         localStorage.removeItem(itemID)
     })
-    blockerDivClickListener()
+    //blockerDivClickListener()
 }
 
 const addEditEventListener = (itemID) => {
@@ -75,7 +82,29 @@ const addEditEventListener = (itemID) => {
     })
 }
 
+const addDetailsEventListenr = (item) => {
+    const detailsButton = document.querySelector(`.todo-item[task-id="${item._id}"]>.details`)
+    detailsButton.addEventListener("click", () => {
+        console.log(item._description)
+        toggleDetailsWindow()
+
+        const detailInput = document.getElementById("detail")
+        detailInput.value = item._description
+        blocker2DivClickListener()
+    })
+}
+
+const blocker2DivClickListener = () => {
+    blocker2.addEventListener("click", () => {
+        toggleDetailsWindow()
+        console.log("dddww")
+    }, {
+        once: true
+    })
+}
+
 const submitEventHandlerForEditTask = (callback) => {
+    console.log("erstellt")
     form.addEventListener("submit", callback,
     {
         once: true
@@ -96,6 +125,11 @@ function togglePopUpHandler() {
     console.log("togglePopUpHandler")
     toggleFormWindow()
     toggleBlurBackground()
+}
+
+function toggleDetailsWindow() {
+    toggleBlurBackground()
+    descriptionPopUp.classList.toggle("open")
 }
 
 function openTaskFormPopUp(editBool = false) {
@@ -139,4 +173,4 @@ function addSubmitButtonForFrom(editBool = false) {
     }
 }
 
-export {addDeleteEventListener, addEditEventListener}
+export {addDeleteEventListener, addEditEventListener, addDetailsEventListenr}
