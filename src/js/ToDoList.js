@@ -10,8 +10,7 @@ const todolist = (() => {
 
     const displayTasks = () => {
         Object.keys(localStorage).forEach(key => {
-            let item = localStorage.getItem(key)
-            item = JSON.parse(item)
+            let item = getParsedTaskItem(key)
             displayTask(item)
             
             addDeleteEventListener(item._id)
