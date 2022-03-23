@@ -1,6 +1,6 @@
 # To-Do List
 
-#### 🧪 [Live preview](https://priceless-shannon-0aff80.netlify.app/)
+#### 🧪 [Live preview](https://stellar-torte-407c3b.netlify.app/)
 ![Image](demo.png)
 
 #### 📝 Description
