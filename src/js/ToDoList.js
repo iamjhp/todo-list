@@ -1,6 +1,6 @@
-import format from 'date-fns'
+import {isToday} from "./Date"
 import Task from "./Task";
-import {addDeleteEventListener, addEditEventListener, addDetailsEventListenr} from "./DisplayController"
+import {addDeleteEventListener, addEditEventListener, addDetailsEventListenr, checkBoxEventListener, displayCompletedTask} from "./DisplayController"
 
 const todoListsClass = document.querySelector(".todo-lists")
 const taskID = document.querySelector(".task-id")
@@ -17,7 +17,29 @@ const todolist = (() => {
             addDeleteEventListener(item._id)
             addEditEventListener(item)
             addDetailsEventListenr(item)
+            checkBoxEventListener(item)
         })
+    }
+
+    const displayTodayTasks = () => {
+        Object.keys(localStorage).forEach(key => {
+            let item = getParsedTaskItem(key)
+            let date = item._date
+            
+            if (isToday(date)) {
+                displayTask(item)
+                addDeleteEventListener(item._id)
+                addEditEventListener(item)
+                addDetailsEventListenr(item)
+                checkBoxEventListener(item)
+            }
+        })
+    }
+
+    const getParsedTaskItem = (key) => {
+        let item = localStorage.getItem(key)
+        item = JSON.parse(item)
+        return item
     }
 
     const saveNewTask = (item) => {
@@ -26,6 +48,7 @@ const todolist = (() => {
         addDeleteEventListener(item._id)
         addEditEventListener(item)
         addDetailsEventListenr(item)
+        checkBoxEventListener(item)
     }
 
     const editTask = (item) => {
@@ -34,12 +57,13 @@ const todolist = (() => {
         const editedDate = item._date
         const editedDespriction = item._description
         const editedPriority = item.priority
-        editHTMLSelektion(editedId, editedTitle, editedDate, editedDespriction, editedPriority)
+        const checkbox = item._checkbox
+        editHTMLSelektion(editedId, editedTitle, editedDate, editedDespriction, editedPriority, checkbox)
         addDeleteEventListener(item._id)
         addEditEventListener(item)
         addDetailsEventListenr(item)
-        console.log(item._description)
         editTaskInStorage(item)
+        checkBoxEventListener(item)
     }
 
     const editTaskInStorage = (item) => {
@@ -48,10 +72,10 @@ const todolist = (() => {
     }
 
     const displayTask = (item) => {
-        getHTMLSkeletonForNewTask(item._id, item._name, item._date)
+        getHTMLSkeletonForNewTask(item._id, item._name, item._date, item._description, item.priority, item._checkbox)
     }
 
-    const editHTMLSelektion = (id, name, date, description, priority) => {
+    const editHTMLSelektion = (id, name, date, description, priority, checkbox) => {
         const toDoItemDiv = document.querySelector(`.todo-item[task-id="${id}"]`)
         let childNode = toDoItemDiv.lastElementChild
         while(childNode) {
@@ -65,6 +89,7 @@ const todolist = (() => {
         
         const checkBoxInput = document.createElement("input")
         checkBoxInput.type = "checkbox"
+        checkBoxInput.checked = checkbox
         checkBoxLabel.appendChild(checkBoxInput)
 
         const todoTitleSpan = document.createElement("span")
@@ -90,10 +115,12 @@ const todolist = (() => {
         const deleteSpan = document.createElement("button")
         deleteSpan.classList.add("delete")
         deleteSpan.appendChild(document.createTextNode("delete"))
-        toDoItemDiv.appendChild(deleteSpan)        
+        toDoItemDiv.appendChild(deleteSpan) 
+        
+        displayCompletedTask(checkbox, todoTitleSpan)
     }
 
-    const getHTMLSkeletonForNewTask = (id, name, date) => {
+    const getHTMLSkeletonForNewTask = (id, name, date, description, priority, checkbox) => {
         const toDoItemDiv = document.createElement("div")
         toDoItemDiv.classList.add("todo-item")
         toDoItemDiv.setAttribute("task-id", id)
@@ -104,6 +131,7 @@ const todolist = (() => {
         
         const checkBoxInput = document.createElement("input")
         checkBoxInput.type = "checkbox"
+        checkBoxInput.checked = checkbox
         checkBoxLabel.appendChild(checkBoxInput)
 
         const todoTitleSpan = document.createElement("span")
@@ -132,9 +160,11 @@ const todolist = (() => {
         toDoItemDiv.appendChild(deleteSpan)
 
         todoListsClass.appendChild(toDoItemDiv)
+
+        displayCompletedTask(checkbox, todoTitleSpan)
     }
 
-    return {displayTasks, saveNewTask, editTask}
+    return {displayTasks, saveNewTask, editTask, editTaskInStorage, displayTodayTasks}
 })()
 
 export default todolist

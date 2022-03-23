@@ -79,11 +79,16 @@ header {
     gap: 2rem;
 }
 
-.nav > .selected {
+[selected="true"] {
     background-color: palevioletred;
 }
 
-.nav-footer {
+.nav-item {
+    cursor: pointer;
+}
+
+.nav-item:hover {
+    background-color: aqua;
 }
 
 .add-task {
@@ -197,6 +202,10 @@ header {
     display: block;
 }
 
+#detail {
+    border: none;
+}
+
 .description-container {
     display: flex;
     flex-direction: column;
@@ -229,3 +238,6 @@ header {
     background: rgba(0,0,0,.5);
 }
 
+#cross-out {
+    text-decoration: line-through;
+}

@@ -7,7 +7,7 @@ const addToDoListButton = document.querySelector(".add-task")
 const blocker = document.querySelector(".blocker")
 const blocker2 = document.querySelector(".blocker2")
 const form = document.querySelector(".form-container")
-const descriptionPopUp = document.getElementById("description-popup")
+const descriptionPopUp = document.getElementById("description-popup") 
 
 addToDoListButton.addEventListener("click", () => {
     openTaskFormPopUp(false)
@@ -26,8 +26,6 @@ const blockerDivClickListener = (callback = null) => {
     blocker.addEventListener("click", () => {
         if(callback) {
             form.removeEventListener("submit", callback)
-            console.log("deleted")
-            
         } 
         togglePopUpHandler()
     }, {
@@ -35,12 +33,31 @@ const blockerDivClickListener = (callback = null) => {
     })
 }
 
+const checkBoxEventListener = (item) => {
+    const checkBox = document.querySelector(`.todo-item[task-id="${item._id}"]>.checkbox>input`)
+    const todoTitle = document.querySelector(`.todo-item[task-id="${item._id}"]>.todo-title`)
+    checkBox.addEventListener("click", () => {
+        item._checkbox = checkBox.checked
+        displayCompletedTask(item._checkbox, todoTitle)
+        ToDoList.editTaskInStorage(item)
+    })
+}
+
+const displayCompletedTask = (checkbox, checkBoxInput) => {
+    if (checkbox) {
+        checkBoxInput.id = "cross-out"
+    } else {
+        checkBoxInput.id = "notChecked"
+    }
+}
+
 // handle after clicking the 'add task' button in the pop-up
 const handleTaskFromAddButtonEvent = (e) => {
     e.preventDefault()
     const {title, date, description, priority} = getNewTaskForm()
-    const newTask = new Task(title, date, description, priority)
+    const newTask = new Task(title, date, description, priority, false)
     ToDoList.saveNewTask(newTask)
+
     togglePopUpHandler()
 }
 
@@ -85,7 +102,6 @@ const addEditEventListener = (itemID) => {
 const addDetailsEventListenr = (item) => {
     const detailsButton = document.querySelector(`.todo-item[task-id="${item._id}"]>.details`)
     detailsButton.addEventListener("click", () => {
-        console.log(item._description)
         toggleDetailsWindow()
 
         const detailInput = document.getElementById("detail")
@@ -97,14 +113,12 @@ const addDetailsEventListenr = (item) => {
 const blocker2DivClickListener = () => {
     blocker2.addEventListener("click", () => {
         toggleDetailsWindow()
-        console.log("dddww")
     }, {
         once: true
     })
 }
 
 const submitEventHandlerForEditTask = (callback) => {
-    console.log("erstellt")
     form.addEventListener("submit", callback,
     {
         once: true
@@ -122,7 +136,6 @@ function toggleBlurBackground() {
 }
 
 function togglePopUpHandler() {
-    console.log("togglePopUpHandler")
     toggleFormWindow()
     toggleBlurBackground()
 }
@@ -173,4 +186,4 @@ function addSubmitButtonForFrom(editBool = false) {
     }
 }
 
-export {addDeleteEventListener, addEditEventListener, addDetailsEventListenr}
+export {addDeleteEventListener, addEditEventListener, addDetailsEventListenr, checkBoxEventListener, displayCompletedTask}

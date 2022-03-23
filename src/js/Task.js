@@ -1,11 +1,11 @@
 export default class Task {
-    constructor(name, date, description, priority, project) {
+    constructor(name, date, description, priority, checkbox) {
         this._id = Task.idCounter
         this.name = name
         this.date = date
         this.description = description
         this.priority = priority
-        this.project = project
+        this.checkbox = checkbox
     }
 
     set name(newName) {
@@ -34,6 +34,14 @@ export default class Task {
 
     get description() {
         return this._description
+    }
+
+    set checkbox(newBool) {
+        this._checkbox = newBool
+    }
+
+    get checkbox() {
+        return this._checkbox
     }
 
     static get idCounter() {
