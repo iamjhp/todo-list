@@ -36,6 +36,14 @@ export default class Task {
         return this._description
     }
 
+    get priority() {
+        return this.priority
+    }
+
+    set priority(newPriority) {
+        this._priority = newPriority
+    } 
+
     set checkbox(newBool) {
         this._checkbox = newBool
     }

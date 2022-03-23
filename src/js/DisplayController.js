@@ -91,7 +91,7 @@ const addEditEventListener = (itemID) => {
         document.getElementById("title").value = itemID._name
         document.getElementById("date").value = itemID._date
         document.getElementById("description").value = itemID._description
-        document.getElementById("priority").value = itemID.priority
+        document.getElementById("priority").value = itemID._priority
         openTaskFormPopUp(true)
         const handler = (e) => handleTaskFromEditButtonEvent(e, itemID)
         submitEventHandlerForEditTask(handler)
@@ -105,7 +105,9 @@ const addDetailsEventListenr = (item) => {
         toggleDetailsWindow()
 
         const detailInput = document.getElementById("detail")
+        const priorityInput = document.getElementById("detail-priority")
         detailInput.value = item._description
+        priorityInput.textContent = item._priority
         blocker2DivClickListener()
     })
 }

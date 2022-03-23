@@ -56,7 +56,7 @@ const todolist = (() => {
         const editedTitle = item._name
         const editedDate = item._date
         const editedDespriction = item._description
-        const editedPriority = item.priority
+        const editedPriority = item._priority
         const checkbox = item._checkbox
         editHTMLSelektion(editedId, editedTitle, editedDate, editedDespriction, editedPriority, checkbox)
         addDeleteEventListener(item._id)
@@ -72,7 +72,7 @@ const todolist = (() => {
     }
 
     const displayTask = (item) => {
-        getHTMLSkeletonForNewTask(item._id, item._name, item._date, item._description, item.priority, item._checkbox)
+        getHTMLSkeletonForNewTask(item._id, item._name, item._date, item._description, item._priority, item._checkbox)
     }
 
     const editHTMLSelektion = (id, name, date, description, priority, checkbox) => {
